@@ -1,0 +1,12 @@
+query($first: Int!){
+  User(filter:{name: "Jessica Sherman"}){
+    recommendedMovies(first: $first){
+      title,
+      movieId,
+      poster,
+      imdbRating,
+      year,
+      runtime
+    }
+  }
+}

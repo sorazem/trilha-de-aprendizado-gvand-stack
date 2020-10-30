@@ -1,0 +1,12 @@
+query($genre: String!, $first: Int!){
+  Genre(filter: {name: $genre}){
+    name
+    movies(first: $first){
+      title,
+      poster,
+      imdbRating,
+      year,
+      runtime
+    }
+  }
+}

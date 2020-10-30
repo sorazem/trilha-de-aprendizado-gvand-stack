@@ -1,0 +1,9 @@
+query($first: Int!){
+  User(filter: {name: "Jessica Sherman"}){
+    RATED_rel(orderBy: timestamp_desc, filter: {rating_in: 5}, first: $first){
+      Movie{
+        poster
+      }
+    }
+  }
+}
