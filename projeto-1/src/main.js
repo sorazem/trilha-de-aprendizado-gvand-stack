@@ -6,6 +6,10 @@ import { createProvider } from './vue-apollo'
 
 Vue.config.productionTip = false
 
+const cat = localStorage.getItem('myCat');
+console.log(cat)
+
+
 new Vue({
   vuetify,
   router,
