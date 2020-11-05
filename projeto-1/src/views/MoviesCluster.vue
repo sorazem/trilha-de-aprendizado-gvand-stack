@@ -22,7 +22,7 @@
     <div class="pa-4" v-else>
       <h3 class="my-4">Filmes recomendados</h3>
       <ApolloQuery :query="require('@/graphql/movies/getRecommendedMovies.gql')"
-      :variables="{first: this.pageSize}"
+      :variables="{first: this.pageSize, id: this.userId}"
       fetch-policy="cache-and-network">
         <template slot-scope="{result: {loading, error, data}}">
           <div v-if="data">
@@ -48,7 +48,8 @@
     components: { MovieCard },
     data(){
       return{
-        pageSize: 12
+        pageSize: 12,
+        userId: ''
       }
     },
     computed: {
@@ -61,6 +62,9 @@
       loadMore(){
         this.pageSize += 6
       }
+    },
+    mounted(){
+      this.userId = localStorage.getItem('user_id')
     }
   }
 </script>

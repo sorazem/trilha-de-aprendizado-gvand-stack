@@ -6,8 +6,8 @@ import { createProvider } from './vue-apollo'
 
 Vue.config.productionTip = false
 
-const cat = localStorage.getItem('user_id');
-console.log(cat)
+const id = localStorage.getItem('user_id');
+console.log(id)
 
 
 new Vue({
