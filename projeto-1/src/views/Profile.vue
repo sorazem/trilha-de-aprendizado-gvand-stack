@@ -4,13 +4,13 @@
       <v-avatar size="64" class="mr-4">
         <img src="../assets/groot.svg">
       </v-avatar>
-      <h3>Stephanie</h3>
+      <h3>{{username}}</h3>
     </v-row>
     <v-divider class="my-8"></v-divider>
     <v-row class="hidden-md-and-down">
       <h4 class="pl-6">Filmes recentes que você amou</h4>
       <ApolloQuery :query="require('@/graphql/movies/getRecent5StarRating.gql')"
-      :variables="{first: 6}"
+      :variables="{first: 6, name: this.username}"
       fetch-policy="cache-and-network">
         <template slot-scope="{result: {loading, error, data}}">
           <div v-if="data">
@@ -36,6 +36,7 @@
   </div>
 </template>
 <script>
+  import gql from 'graphql-tag'
   import MovieCard from '../components/MovieCard'
 
   export default{
@@ -43,6 +44,8 @@
     components: { MovieCard },
     data(){
       return{
+        userId: '',
+        username: '',
         images: ['eva', 'darthvader', 'deadpool', 'groot', 'ironman', 'stormtrooper']
       }
     },
@@ -55,7 +58,21 @@
       logout(){
         localStorage.removeItem('user_id')
         this.$router.push('/login')
+      },
+      async getUsername(){
+        let response = await this.$apollo.query({
+          query: gql`query($id: ID!){User(filter: {userId: $id}){
+            name
+          }}`,
+          variables: {id: this.userId}
+        })
+
+        return response.data.User[0].name
       }
+    },
+    async mounted(){
+      this.userId = localStorage.getItem('user_id')
+      this.username = await this.getUsername()
     }
   }
 </script>
