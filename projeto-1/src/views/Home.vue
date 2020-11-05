@@ -48,7 +48,7 @@ export default {
         RecommendedMovies: {
           title: 'Recomendados para você',
           query: require('@/graphql/movies/getRecommendedMovies.gql'),
-          variables: {first: 6}
+          variables: {first: 6, id: 4}
         },
         Adventure: {
           title: 'Aventura',

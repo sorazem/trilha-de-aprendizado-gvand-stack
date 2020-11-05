@@ -5,24 +5,16 @@ import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
-const isLoggedIn = (to, from, next) =>{
-  const id = localStorage.getItem('id');
-  if(id) next('/')
-  else next()
-}
-
 const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login,
-    beforeEnter: isLoggedIn
+    component: Login
   },
   {
     path: '/',
     name: 'Home',
-    component: Home,
-    beforeEnter: !isLoggedIn
+    component: Home
   },
   {
     path: '/perfil',
@@ -42,6 +34,16 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  let isLoggedIn = false
+  if(localStorage.getItem('user_id')) isLoggedIn = true
+
+  if (to.name !== 'Login' && !isLoggedIn) next({ name: 'Login' })
+  else next()
+
+  if (to.name == 'Login' && isLoggedIn) next({ name: 'Home'})
 })
 
 export default router

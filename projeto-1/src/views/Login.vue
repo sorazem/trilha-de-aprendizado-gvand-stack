@@ -21,14 +21,22 @@ export default {
     }
   },
   methods: {
-    login(username){
-
+    async login(username){
+      let response = await this.searchUser(username)
+      if(response.data.User[0]){
+        localStorage.setItem("user_id", response.data.User[0].userId)
+        this.$router.push('/')
+      }
+      else{
+        console.log("Não existe tal usuário")
+      }
     },
     async searchUser(username){
-      let response = await this.$apollo.query({
-        query: gql`User(filter: {name: "Jessica Sherman"}){
+      return await this.$apollo.query({
+        query: gql`query($name: String!){User(filter: {name: $name}){
           userId
-        }`
+        }}`,
+        variables: {name: username}
       })
     }
   }
