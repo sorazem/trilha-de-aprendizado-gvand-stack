@@ -1,12 +1,11 @@
 <template>
   <div class="py-8">
-    <v-row class="d-flex justify-center align-center">
+    <v-row class="d-flex justify-center align-center my-4">
       <v-avatar size="64" class="mr-4">
         <img src="../assets/groot.svg">
       </v-avatar>
       <h3>{{username}}</h3>
     </v-row>
-    <v-divider class="my-8"></v-divider>
     <v-row class="hidden-md-and-down">
       <h4 class="pl-6">Filmes recentes que você amou</h4>
       <ApolloQuery :query="require('@/graphql/movies/getRecent5StarRating.gql')"
@@ -29,24 +28,30 @@
       <v-col align="left"><h4>Configurações da conta</h4></v-col>
     </v-row>
     <v-row class="pl-8">
-      <v-btn outlined color="#6b00b3" class="my-2">Mudar nome</v-btn>
-      <v-btn outlined color="#6b00b3" class="my-2">Deletar conta</v-btn>
+      <v-btn outlined color="#6b00b3" class="my-2" @click="changeUsernameDialog = true">Mudar nome</v-btn>
+      <v-btn outlined color="#6b00b3" class="my-2" @click="deleteAccountDialog = true">Deletar conta</v-btn>
       <v-btn outlined color="#6b00b3" class="my-2" @click="logout">Sair</v-btn>
     </v-row>
+    <delete-account-dialog :deleteAccountDialog="deleteAccountDialog" :userId="userId" @closeDeleteAccountDialog="closeDeleteAccountDialog"></delete-account-dialog>
+    <change-username-dialog :changeUsernameDialog="changeUsernameDialog" :userId="userId" @closeChangeUsernameDialog="closeChangeUsernameDialog"></change-username-dialog>
   </div>
 </template>
 <script>
   import gql from 'graphql-tag'
   import MovieCard from '../components/MovieCard'
+  import DeleteAccountDialog from '../components/dialogs/deleteAccountDialog'
+  import ChangeUsernameDialog from '../components/dialogs/changeUsernameDialog'
 
   export default{
     name: 'Profile',
-    components: { MovieCard },
+    components: { MovieCard, DeleteAccountDialog, ChangeUsernameDialog },
     data(){
       return{
         userId: '',
         username: '',
-        images: ['eva', 'darthvader', 'deadpool', 'groot', 'ironman', 'stormtrooper']
+        images: ['eva', 'darthvader', 'deadpool', 'groot', 'ironman', 'stormtrooper'],
+        deleteAccountDialog: false,
+        changeUsernameDialog: false
       }
     },
     computed:{
@@ -55,6 +60,13 @@
       }
     },
     methods: {
+      closeChangeUsernameDialog(){
+        this.changeUsernameDialog = false
+      },
+      closeDeleteAccountDialog(){
+        this.deleteAccountDialog = false
+        this.logout()
+      },
       logout(){
         localStorage.removeItem('user_id')
         this.$router.push('/login')

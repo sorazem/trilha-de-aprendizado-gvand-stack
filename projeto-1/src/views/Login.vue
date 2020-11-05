@@ -36,7 +36,8 @@ export default {
         query: gql`query($name: String!){User(filter: {name: $name}){
           userId
         }}`,
-        variables: {name: username}
+        variables: {name: username},
+        fetchPolicy: 'network-only'
       })
     }
   }
