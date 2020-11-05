@@ -29,9 +29,9 @@
       <v-col align="left"><h4>Configurações da conta</h4></v-col>
     </v-row>
     <v-row class="pl-8">
-      <v-btn outlined color="#6b00b3">Mudar nome</v-btn>
-      <v-btn outlined color="#6b00b3">Deletar conta</v-btn>
-      <v-btn outlined color="#6b00b3">Sair</v-btn>
+      <v-btn outlined color="#6b00b3" class="my-2">Mudar nome</v-btn>
+      <v-btn outlined color="#6b00b3" class="my-2">Deletar conta</v-btn>
+      <v-btn outlined color="#6b00b3" class="my-2" @click="logout">Sair</v-btn>
     </v-row>
   </div>
 </template>
@@ -49,6 +49,12 @@
     computed:{
       image(){
         return this.images[Math.floor((Math.random() * this.images.length))]
+      }
+    },
+    methods: {
+      logout(){
+        localStorage.removeItem('user_id')
+        this.$router.push('/login')
       }
     }
   }
