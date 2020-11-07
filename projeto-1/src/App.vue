@@ -4,15 +4,30 @@
       <v-app-bar color="#f8f8f8" fixed elevation="1">
         <router-link to="/"><h1>Filmax</h1></router-link>
         <v-spacer></v-spacer>
-        <v-text-field color="#6b00b3" hide-details="auto" prepend-inner-icon="fa-search" placeholder="Procure filmes"></v-text-field>
+        <v-text-field v-model="searchText" v-on:keyup.enter="search" color="#6b00b3" hide-details="auto" prepend-inner-icon="fa-search" placeholder="Search movies"></v-text-field>
         <v-spacer></v-spacer>
         <router-link to="/">Home</router-link>
-        <router-link to="/perfil">Perfil</router-link>
+        <router-link to="/perfil">Profile</router-link>
       </v-app-bar>
       <router-view style="marginTop: 56px"/>
     </v-main>
   </v-app>
 </template>
+
+<script>
+export default {
+  data(){
+    return{
+      searchText: ''
+    }
+  },
+  methods:{
+    search(){
+      this.$router.push({path: 'search', query: {movie: this.searchText}})
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
